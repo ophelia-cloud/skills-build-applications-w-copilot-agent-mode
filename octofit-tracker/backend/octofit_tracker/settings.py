@@ -25,7 +25,15 @@ SECRET_KEY = 'django-insecure-eehdzk6^96l409v9-jxtkc#1f+3=im@kb$jzl8d-2tgu3olw=&
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+import os
+codespace_name = os.environ.get('CODESPACE_NAME', '')
+codespace_host = f"{codespace_name}-8000.app.github.dev" if codespace_name else None
+ALLOWED_HOSTS = [
+    codespace_host,
+    'localhost',
+    '127.0.0.1',
+]
+ALLOWED_HOSTS = [host for host in ALLOWED_HOSTS if host]
 
 
 # Application definition
@@ -38,7 +46,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'octofit_tracker',
-        'core',
+    'octofit_tracker.core',
     'rest_framework',
     'djongo',
     'corsheaders',
@@ -87,10 +95,6 @@ DATABASES = {
         'CLIENT': {
             'host': 'localhost',
             'port': 27017,
-            'username': '',
-            'password': '',
-            'authSource': '',
-            'authMechanism': '',
         }
     }
 }
@@ -137,7 +141,11 @@ CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOW_HEADERS = ['*']
 CORS_ALLOW_METHODS = ['*']
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = [
+    f"{os.environ.get('CODESPACE_NAME', '')}-8000.app.github.dev",
+    'localhost',
+    '127.0.0.1',
+]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
